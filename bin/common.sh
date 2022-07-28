@@ -205,4 +205,6 @@ configure() {
         info "$CONFIG_FILE does not exist in repository, falling back to default configuration."
         export RENOVATE_CONFIG_FILE="/usr/src/app/config.js"
     fi
+
+    export RENOVATE_REPOSITORIES=$BITBUCKET_REPO_FULL_NAME
 }

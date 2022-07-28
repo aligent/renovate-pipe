@@ -4,3 +4,5 @@ FROM renovate/renovate:32.131.1
 COPY bin/ /usr/local/bin/
 
 COPY config.js .
+
+ENV RENOVATE_PLATFORM="bitbucket"
