@@ -1,0 +1,10 @@
+name: Aligent Renovate Pipe
+image: aligent/renovate-pipe:latest
+description: This pipe is used to run renovate
+repository: git@github.com:aligent/renovate-pipe.git 
+maintainer: adam.hall@aligent.com.au
+tags:
+    - bitbucket-pipelines
+    - pipes
+    - bash
+    - renovate
