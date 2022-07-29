@@ -167,27 +167,32 @@ check_for_newer_version() {
 
 # Custom functions for pipeline
 setup_ssh_creds() {
-     # Setup pipeline SSH 
-     INJECTED_SSH_CONFIG_DIR="/opt/atlassian/pipelines/agent/ssh"
-     IDENTITY_FILE="${INJECTED_SSH_CONFIG_DIR}/id_rsa_tmp"
-     KNOWN_SERVERS_FILE="${INJECTED_SSH_CONFIG_DIR}/known_hosts"
-     if [ ! -f ${IDENTITY_FILE} ]; then
-          info "No default SSH key configured in Pipelines.\n These are required to install internal composer packages. \n These should be generated in bitbucket settings at Pipelines > SSH Keys."
-          return
-     fi
-     mkdir -p ~/.ssh
-     touch ~/.ssh/authorized_keys
-     cp ${IDENTITY_FILE} ~/.ssh/pipelines_id
+    # Setup pipeline SSH 
+    INJECTED_SSH_CONFIG_DIR="/opt/atlassian/pipelines/agent/ssh"
+    IDENTITY_FILE="${INJECTED_SSH_CONFIG_DIR}/id_rsa_tmp"
+    KNOWN_SERVERS_FILE="${INJECTED_SSH_CONFIG_DIR}/known_hosts"
+    if [ ! -f ${IDENTITY_FILE} ]; then
+        info "No default SSH key configured in Pipelines.\n These are required to install internal composer packages. \n These should be generated in bitbucket settings at Pipelines > SSH Keys."
+        return
+    fi
+    mkdir -p ~/.ssh
+    touch ~/.ssh/authorized_keys
+    cp ${IDENTITY_FILE} ~/.ssh/pipelines_id
 
-     if [ ! -f ${KNOWN_SERVERS_FILE} ]; then
-          fail "No SSH known_hosts configured in Pipelines."
-     fi
-     cat ${KNOWN_SERVERS_FILE} >> ~/.ssh/known_hosts
-     if [ -f ~/.ssh/config ]; then
-          debug "Appending to existing ~/.ssh/config file"
-     fi
-     echo "IdentityFile ~/.ssh/pipelines_id" >> ~/.ssh/config
-     chmod -R go-rwx ~/.ssh/
+    if [ ! -f ${KNOWN_SERVERS_FILE} ]; then
+        fail "No SSH known_hosts configured in Pipelines."
+    fi
+    cat ${KNOWN_SERVERS_FILE} >> ~/.ssh/known_hosts
+    if [ -f ~/.ssh/config ]; then
+        debug "Appending to existing ~/.ssh/config file"
+    fi
+    chmod -R go-rwx ~/.ssh/
+
+    # Start SSH Agent
+    eval $(ssh-agent -s -a $SSH_AUTH_SOCK)
+
+    # Add our pipelines SSH key to the ssh agent
+    ssh-add ~/.ssh/pipelines_id
 }
 
 configure() {    
