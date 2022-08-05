@@ -35,3 +35,6 @@ pipelines:
                 RENOVATE_USERNAME: $RENOVATE_USERNAME
                 GITHUB_COM_TOKEN: $GITHUB_COM_TOKEN
 ```
+
+## SSH Authentication
+This pipeline will pickup the SSH Key of the repository and pass it through to the underlying npm, composer, etc commands being run.
