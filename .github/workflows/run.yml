@@ -1,0 +1,14 @@
+name: Run
+
+on: [pull_request]
+
+jobs:
+  test-build:
+    name: Renovate Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prepare environment variables
+        run: echo "IMAGE_NAME=aligent/renovate-pipe" >> $GITHUB_ENV
+      - name: Build Dockerfile
+        run: docker build -t "$IMAGE_NAME" -f Dockerfile .
