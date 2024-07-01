@@ -1,4 +1,4 @@
-FROM renovate/renovate:37.377.8
+FROM renovate/renovate:37.421.5
 
 # Overwrite default entrypoint file and add our common functions
 COPY bin/ /usr/local/bin/
